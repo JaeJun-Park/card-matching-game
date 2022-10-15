@@ -1,4 +1,4 @@
-.modal-backdrop {
+.modal-block .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,11 +10,16 @@
   align-items: center;
 }
 
-.modal {
+.modal-block .modal {
   background-color: black;
   padding: 20px 40px;
   border-radius: 30px;
   max-width: 480px;
   background-color: rgba(0, 0, 0, 0.8);
+}
 
+.modal-block .sales-btn {
+  border: 4px solid #333;
+  font-size: 18px;
+  text-transform: uppercase;
 }

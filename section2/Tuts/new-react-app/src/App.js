@@ -1,32 +1,32 @@
 import './App.css'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Title from './components/Title'
 import Modal from './components/Modal'
+import EventList from './components/EventList'
+import NewEventForm from './components/NewEventForm'
 
-function App() {
+export default function App() {
   const [showModal, setShowModal] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
-  const [events, setEvents] = useState([
-    { title: 'hijacking the flight', id: 1 },
-    { title: 'the murderer', id: 2 },
-    { title: 'minions', id: 3 },
-  ])
+  const [events, setEvents] = useState([])
 
-  const handleClose = () => {
-    setShowModal(false)
-  }
   const handleOpen = () => {
     setShowModal(true)
   }
 
   const handleClick = (id) => {
-    setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id))
+    setEvents((prevEvents) => prevEvents.filter((event) => event.id != id))
   }
+
+  const addEvent = (event) => {
+    setEvents((prevEvents) => [...prevEvents, event])
+    setShowModal(false)
+  }
+
   const subtitle = 'All the latest events in Marioland'
 
   return (
     <div className="App">
-      <button onClick={handleOpen}>modal open</button>
       <Title title="events in your area" subtitle={subtitle}></Title>
       <Title title="just another title" subtitle={subtitle}></Title>
       {showEvents && (
@@ -39,24 +39,15 @@ function App() {
           <button onClick={() => setShowEvents(true)}>show</button>
         </div>
       )}
-      {showEvents &&
-        events.map((event) => (
-          <React.Fragment key={event.id}>
-            <h2>
-              {event.id} - {event.title}
-            </h2>
-            <button onClick={() => handleClick(event.id)}> delete </button>
-          </React.Fragment>
-        ))}
+
+      {showEvents && <EventList events={events} handleClick={handleClick} />}
       {showModal && (
-        <Modal handleClose={handleClose}>
-          <h2>33% Off Coupon Code!!</h2>
-          <p>Use the code NINJA10 at the checkout</p>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id quam enim corporis. Voluptatum tempora nostrum quo sunt ducimus, facilis excepturi.</p>
+        <Modal isSalesModal={true}>
+          <NewEventForm addEvent={addEvent} setShowModal={setShowModal} />
+          <button onClick={() => setShowModal(false)}>x</button>
         </Modal>
       )}
+      <button onClick={handleOpen}>Add new event</button>
     </div>
   )
 }
-
-export default App
